@@ -1,11 +1,12 @@
 /**
  * Created by ASA on 17.11.2016.
  */
+
 var mongoose = require('mongoose');
 
 var crypto = require('crypto')
-var db = mongoose.connect("mongodb://<dbuser>:<dbpassword>@ds051851.mlab.com:51851/armendb");
-var User = require('./db/models/User.js')
+var db = mongoose.connect("mongodb://armen:qwerty@ds051851.mlab.com:51851/armendb");
+var User = require('./db/models/User.js');
 
 // User API
 
