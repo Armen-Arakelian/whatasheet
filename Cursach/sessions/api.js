@@ -4,7 +4,7 @@
 var mongoose = require('mongoose');
 
 var crypto = require('crypto')
-var db = mongoose.connect("mongodb://user:password@ds027409.mongolab.com:27409/coffeeplaces");
+var db = mongoose.connect("mongodb://<dbuser>:<dbpassword>@ds051851.mlab.com:51851/armendb");
 var User = require('./db/models/User.js')
 
 // User API

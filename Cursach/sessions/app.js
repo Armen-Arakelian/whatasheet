@@ -34,7 +34,7 @@ app.use(session({
     saveUninitialized: false,
     // Место хранения можно выбрать из множества вариантов, это и БД и файлы и Memcached.
     store: new MongoStore({
-        url: 'mongodb://user12345:foobar@localhost/test-app',
+        url: "mongodb://<dbuser>:<dbpassword>@ds027425.mlab.com:27425/sessions",
     })
 }))
 
