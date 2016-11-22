@@ -1,7 +1,3 @@
-// server.js
-
-// set up ======================================================================
-// get all the tools we need
 var express  = require('express');
 var app      = express();
 var port     = process.env.PORT || 8080;
@@ -28,7 +24,7 @@ app.use(bodyParser());
 app.set('view engine', 'ejs');
 
 
-app.use(session({ secret: 'iloveruslanhadyniak' })); 
+app.use(session({ secret: 'iloveruslanhadyniak' }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
