@@ -10,6 +10,10 @@ module.exports = function(app, passport) {
         res.render("deleteUser");
     });
 
+    app.get('/deleteArticle', isAdmin, isLoggedIn, function(req, res) {
+        res.render("deleteArticle");
+    });
+
     app.get('/createArticle', isLoggedIn, function(req, res) {
         res.render("createArticle");
     });
@@ -100,32 +104,52 @@ module.exports = function(app, passport) {
         res.redirect('/');
     });
     app.post('/deleteUser', isLoggedIn, isAdmin, function (req, res) {
-        User.remove({ 'local.email': req.body.email }, function(err) {
-            if (!err) {
-                console.log(req.body.email);
-                console.log("deleted");
-                res.redirect("/");
-            }
-            else {
+        if(User.find({'local.email': req.body.email})) {
+            User.remove({'local.email': req.body.email}, function (err) {
+                if (!err) {
+                    console.log("deleted");
+                    res.redirect("/");
+                }
+                else {
+                    res.statusCode = 500;
+                    res.send({ error: 'Server error' });
+                }
+            });
+        }
+        else{
+        }
+    })
 
-            }
-        });
+    app.post('/deleteArticle', isLoggedIn, isAdmin, function (req, res) {
+        if(Article.find({'title': req.body.title})) {
+            Article.remove({'title': req.body.title}, function (err) {
+                if (!err) {
+                    console.log("deleted");
+                    res.redirect("/");
+                }
+                else {
+                    res.statusCode = 500;
+                    res.send({ error: 'Server error' });
+                }
+            });
+        }
+        else{
+        }
     })
 };
 
-function isLoggedIn(req, res, next) {
+function isLoggedIn(req, res, next, redirect) {
 
     if (req.isAuthenticated())
         return next();
 
-    res.redirect('/notLoggedIn');
+    res.redirect('/' + redirect);
 }
 
 var isAdmin = function (req, res, next) {
     var currentUserId = req.user ? req.user.id : false;
     if(!currentUserId){
         res.redirect('/');
-        return;
     }
     User.findById(currentUserId,function (err, user) {
         if(!user || user.local.role !== "admin"){
