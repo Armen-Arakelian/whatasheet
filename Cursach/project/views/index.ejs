@@ -1,31 +1,42 @@
-<!-- views/index.ejs -->
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head>
-  <title>Node Authentication</title>
-  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
-  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
-  <style>
-    body 		{ padding-top:80px; }
-  </style>
-</head>
+<title>W3.CSS Template</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+<link href="http://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+<style>
+  body {font-family: "Raleway", Arial, sans-serif}
+  .w3-row img{margin-bottom:-8px}
+</style>
 <body>
-<div class="container">
 
-  <div class="jumbotron text-center">
-    <h1><span class="fa fa-lock"></span> Node Authentication</h1>
+<!-- !PAGE CONTENT! -->
+<div class="w3-content" style="max-width:1500px">
 
-    <p>Login or Register with:</p>
+  <!-- Header -->
+  <header class="w3-container w3-xlarge w3-padding-24">
+    <a href="http://localhost:8080/login" class="w3-left w3-btn w3-white">Login</a>
+    <a href="http://localhost:8080/articles" class="w3-left w3-btn w3-white">All ideas</a>
+    <a href="http://localhost:8080/profile" class="w3-right w3-btn w3-white">My profile</a>
+  </header>
 
-    <a href="/login" class="btn btn-default"><span class="fa fa-user"></span> Local Login</a>
-    <a href="/signup" class="btn btn-default"><span class="fa fa-user"></span> Local Signup</a>
+  <!-- Photo Grid -->
+  <div class="w3-row">
+    <div class="w3-half">
+      <img src="http://goingabroad.org/wp-content/uploads/2016/01/gab_capturgretrapho.jpg" style="width:100%">
+      <img src="https://pp.vk.me/c635100/v635100678/21180/RQ2RDkyhcgY.jpg" style="width:100%">
+    </div>
+
+    <div class="w3-half">
+      <img src="http://www.success.com/sites/default/files/styles/article_main/public/main/articles/PositiveReinforcements_0.jpg?itok=g5wpPw64" style="width:100%">
+      <img src="https://s-media-cache-ak0.pinimg.com/736x/05/1d/d8/051dd8e94f0a5452538eebc03c62365a.jpg" style="width:100%">
+    </div>
   </div>
 
+  <!-- End Page Content -->
 </div>
+
 </body>
 </html>
-
-
-
 
 
