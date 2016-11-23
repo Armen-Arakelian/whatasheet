@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>Node Authentication</title>
+    <title>Delete artcle</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
@@ -13,18 +13,17 @@
     </style>
 </head>
 <body>
-<h3 text-align="center">Wellcome to admin page</h3>
 <div class="container">
 
-    <div class="col-sm-6 col-sm-offset-3">
+    <div class="jumbotron text-center">
 
-            <a href="http://localhost:8080/deleteUser" class="w3-btn w3-btn-block w3-padding-12 w3-dark-grey">delete some user</a>
-
-        <hr>
-        <div class="col-sm-6 col-sm-offset-3">
-
-            <a href="http://localhost:8080/deleteArticle" class="w3-btn w3-btn-block w3-padding-12 w3-dark-grey">delete some article</a>
-
+        <form method="post">
+            <div class="w3-group">
+                <label>Title</label>
+                <input type="text" class="w3-input w3-border" name="title">
+            </div>
+            <button type="submit"class="w3-btn w3-btn-block w3-padding-12 w3-dark-grey">Delete</button>
+        </form>
     </div>
 
 </div>
