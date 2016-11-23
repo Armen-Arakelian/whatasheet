@@ -6,6 +6,9 @@ module.exports = function(app, passport) {
     app.get('/limitedAccess', isLoggedIn, function(req, res) {
         res.render("limitedAccess");
     });
+    app.get('/deleteUser', isAdmin, isLoggedIn, function(req, res) {
+        res.render("deleteUser");
+    });
 
     app.get('/createArticle', isLoggedIn, function(req, res) {
         res.render("createArticle");
@@ -61,7 +64,7 @@ module.exports = function(app, passport) {
 
         res.render('login.ejs', { message: req.flash('loginMessage') });
     });
-    app.get('/admin', isLoggedIn, isAuthenticated, function(req, res) {
+    app.get('/admin', isLoggedIn, isAdmin, function(req, res) {
         res.render('admin.ejs');
     });
 
@@ -96,6 +99,18 @@ module.exports = function(app, passport) {
         req.logout();
         res.redirect('/');
     });
+    app.post('/deleteUser', isLoggedIn, isAdmin, function (req, res) {
+        User.remove({ 'local.email': req.body.email }, function(err) {
+            if (!err) {
+                console.log(req.body.email);
+                console.log("deleted");
+                res.redirect("/");
+            }
+            else {
+
+            }
+        });
+    })
 };
 
 function isLoggedIn(req, res, next) {
@@ -106,14 +121,14 @@ function isLoggedIn(req, res, next) {
     res.redirect('/notLoggedIn');
 }
 
-var isAuthenticated = function (req, res, next) {
+var isAdmin = function (req, res, next) {
     var currentUserId = req.user ? req.user.id : false;
     if(!currentUserId){
         res.redirect('/');
         return;
     }
     User.findById(currentUserId,function (err, user) {
-        if(!user || user.role !== "admin"){
+        if(!user || user.local.role !== "admin"){
             res.redirect('/limitedAccess');
         }else{
             next();
