@@ -11,21 +11,19 @@
     <style>
         body {font-family: "Raleway", Arial, sans-serif}
         .w3-row img{margin-bottom:-8px}
+        h1{
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 <div class="container">
 
     <div class="col-sm-6 col-sm-offset-3">
+        <br><br><br><br>
+        <h1>Login</h1>
 
-        <h1><span class="fa fa-sign-in"></span> Login</h1>
 
-        <!-- show any messages that come back with authentication -->
-        <% if (message.length > 0) { %>
-        <div class="alert alert-danger"><%= message %></div>
-        <% } %>
-
-        <!-- LOGIN FORM -->
         <form action="/login" method="post">
             <div class="w3-group">
                 <label>Email</label>

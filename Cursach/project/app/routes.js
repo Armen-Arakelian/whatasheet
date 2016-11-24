@@ -138,12 +138,12 @@ module.exports = function(app, passport) {
     })
 };
 
-function isLoggedIn(req, res, next, redirect) {
+function isLoggedIn(req, res, next) {
 
     if (req.isAuthenticated())
         return next();
 
-    res.redirect('/' + redirect);
+    res.redirect('/notLoggedIn');
 }
 
 var isAdmin = function (req, res, next) {
