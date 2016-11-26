@@ -2,29 +2,39 @@
 <!doctype html>
 <html>
 <head>
-    <title>Node Authentication</title>
+    <title>Profile</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+    <link href="http://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
     <style>
-        body 		{ padding-top:80px; word-wrap:break-word; }
+        body {font-family: "Raleway", Arial, sans-serif}
+        .w3-row img{margin-bottom:-8px}
+        h1{
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 <div class="container">
 
     <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span>Profile Page</h1>
-        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+        <h1>Profile Page</h1>
     </div>
 
     <div class="row">
 
         <!-- LOCAL INFORMATION -->
-        <div class="col-sm-6">
+        <div class="col-sm-6 col-sm-offset-3">
+            <br>
+            <br>
+            <br>
             <div class="well">
-                <h3><span class="fa fa-user"></span>Local</h3>
+                <h3><%= user.local.email %></h3>
 
-                <p>
+                <p class="w3-group">
                     <strong>id</strong>: <%= user._id %><br>
                     <strong>email</strong>: <%= user.local.email %><br>
                     <strong>password</strong>: <%= user.local.password %><br>
@@ -35,7 +45,7 @@
         </div>
 
     </div>
-
+    <a href="/logout" style="width:200px" class="btn btn-default btn-sm col-sm-offset-5" >Logout</a>
 </div>
 </body>
 </html>
