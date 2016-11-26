@@ -22,7 +22,7 @@
         <br><br><br><br>
         <h1>Create Article</h1>
 
-        <form action="/login" method="post">
+        <form method="post" enctype="multipart/form-data">
             <div class="w3-group">
                 <label>Title</label>
                 <input type="text" class="w3-input w3-border" name="title">
@@ -31,6 +31,7 @@
                 <label>Text</label>
                 <input type="text" class="w3-input w3-border" name="text">
             </div>
+            <input type ="file" name ="picture"/><br>
 
             <button type="submit"class="w3-btn w3-btn-block w3-padding-12 w3-dark-grey">Create</button>
         </form>
