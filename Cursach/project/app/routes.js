@@ -1,4 +1,4 @@
-var Article = require('../app/models/article');
+var Idea = require('../app/models/idea');
 var User = require('../app/models/user');
 module.exports = function(app, passport) {
 
@@ -10,40 +10,33 @@ module.exports = function(app, passport) {
         res.render("deleteUser");
     });
 
-    app.get('/deleteArticle', isAdmin, isLoggedIn, function(req, res) {
-        res.render("deleteArticle");
+    app.get('/deleteIdea', isAdmin, isLoggedIn, function(req, res) {
+        res.render("deleteIdea");
     });
 
-    app.get('/createArticle', isLoggedIn, function(req, res) {
-        res.render("createArticle");
+    app.get('/createIdea', isLoggedIn, function(req, res) {
+        res.render("createIdea");
     });
 
     app.get('/notLoggedIn', function(req, res) {
         res.render("notLoggedIn");
     });
 
-    app.get('/articles', function(req, res) {
-        return Article.find(function (err, articles) {
-            if (!err) {
-                return res.send(articles);
-            } else {
-                res.statusCode = 500;
-                //log.error('Internal error(%d): %s',res.statusCode,err.message);
-                return res.send({ error: 'Server error' });
-            }
-        });
-    });
-
-    app.post('/createArticle', function(req, res) {
-        var article = new Article({
+    app.post('/createIdea', function(req, res) {
+        var image = req.files.picture;
+        var picture64string = image.data.toString('base64');
+        var idea = new Idea({
             title: req.body.title,
-            text: req.body.text
-        });
+            text: req.body.text,
+            picture : picture64string
 
-        article.save(function (err) {
+        });
+        idea.picture.data = picture64string;
+        idea.picture.contentType = 'jpg';
+        idea.save(function (err) {
             if (!err) {
-                //log.info("article created");
-                return res.send({ status: 'OK', article:article });
+                res.redirect("/ideas");
+                return res.send({ status: 'OK', idea:idea });
             } else {
                 console.log(err);
                 if(err.name == 'ValidationError') {
@@ -53,7 +46,6 @@ module.exports = function(app, passport) {
                     res.statusCode = 500;
                     res.send({ error: 'Server error' });
                 }
-                //log.error('Internal error(%d): %s',res.statusCode,err.message);
             }
         });
     });
@@ -92,6 +84,14 @@ module.exports = function(app, passport) {
         failureFlash : true
     }));
 
+    app.get('/ideas', function(req, res) {
+        Idea.find({}, function(err, docs){
+            res.render('ideas', {
+                ideas : docs
+            })
+        })
+    });
+
     app.get('/profile', isLoggedIn, function(req, res) {
         res.render('profile.ejs', {
             user : req.user
@@ -120,9 +120,9 @@ module.exports = function(app, passport) {
         }
     })
 
-    app.post('/deleteArticle', isLoggedIn, isAdmin, function (req, res) {
-        if(Article.find({'title': req.body.title})) {
-            Article.remove({'title': req.body.title}, function (err) {
+    app.post('/deleteIdea', isLoggedIn, isAdmin, function (req, res) {
+        if(Idea.find({'title': req.body.title})) {
+            Idea.remove({'title': req.body.title}, function (err) {
                 if (!err) {
                     console.log("deleted");
                     res.redirect("/");

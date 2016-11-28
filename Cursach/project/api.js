@@ -1,6 +1,7 @@
 var express  = require('express');
 var app      = express();
 var mongoose = require('mongoose');
+mongoose.Promise = Promise;
 
 var morgan       = require('morgan');
 var bodyParser   = require('body-parser');
