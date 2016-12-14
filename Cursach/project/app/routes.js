@@ -6,6 +6,13 @@ module.exports = function(app, passport) {
     app.get('/limitedAccess', isLoggedIn, function(req, res) {
         res.render("limitedAccess");
     });
+    app.get('/users', function(req, res) {
+        User.find({}, function(err, docs){
+            res.render('users', {
+                users : docs
+            })
+        })
+    });
     app.get('/deleteUser', isAdmin, isLoggedIn, function(req, res) {
         res.render("deleteUser");
     });
@@ -56,9 +63,7 @@ module.exports = function(app, passport) {
 
 
     app.get('/login', function(req, res) {
-
-
-        res.render('login.ejs', { message: req.flash('loginMessage') });
+     res.render('login.ejs', { message: req.flash('loginMessage') });
     });
     app.get('/admin', isLoggedIn, isAdmin, function(req, res) {
         res.render('admin.ejs');
@@ -93,7 +98,7 @@ module.exports = function(app, passport) {
     });
 
     app.get('/profile', isLoggedIn, function(req, res) {
-        res.render('profile.ejs', {
+        res.render('profile', {
             user : req.user
         });
     });
@@ -135,6 +140,30 @@ module.exports = function(app, passport) {
         }
         else{
         }
+    })
+
+        app.post("/idea/:id", function (req, res) {
+            Idea.findById(req.params.id, function (err, idea) {
+
+                if (err)
+                    res.send(err);
+                console.log(req.body.comment);
+                idea.comments.push({comment:req.body.comment})
+                res.redirect("/ideas")
+                idea.save(function (err) {
+                    if (err)
+                        res.send(err);
+                });
+
+            });
+        })
+
+    app.get('/idea/:id',  function(req, res) {
+        Idea.findOne({_id: req.params.id}, function (err, docs) {
+            res.render('idea', {
+                idea: docs
+            })
+        })
     })
 };
 
