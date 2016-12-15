@@ -1,5 +1,6 @@
 var Idea = require('../app/models/idea');
 var User = require('../app/models/user');
+var Comment = require('../app/models/comment');
 module.exports = function(app, passport) {
 
 
@@ -35,6 +36,8 @@ module.exports = function(app, passport) {
         var idea = new Idea({
             title: req.body.title,
             text: req.body.text,
+            author: req.user.local.email,
+            authorId: req.user._id,
             picture : picture64string
 
         });
@@ -42,8 +45,8 @@ module.exports = function(app, passport) {
         idea.picture.contentType = 'jpg';
         idea.save(function (err) {
             if (!err) {
-                res.redirect("/ideas");
-                return res.send({ status: 'OK', idea:idea });
+                res.redirect("/idea/" + idea._id);
+                return
             } else {
                 console.log(err);
                 if(err.name == 'ValidationError') {
@@ -142,26 +145,53 @@ module.exports = function(app, passport) {
         }
     })
 
-        app.post("/idea/:id", function (req, res) {
-            Idea.findById(req.params.id, function (err, idea) {
-
-                if (err)
-                    res.send(err);
-                console.log(req.body.comment);
-                idea.comments.push({comment:req.body.comment})
-                res.redirect("/ideas")
-                idea.save(function (err) {
-                    if (err)
-                        res.send(err);
-                });
-
+        app.post("/idea/:id", isLoggedIn, function (req, res) {
+            var comment = new Comment({
+                text: req.body.comment,
+                ideaId: req.params.id.replace(" ", ""),
+                author: req.user.local.email
+            });
+            comment.save(function (err) {
+                if (!err) {
+                    res.redirect("/ideas");
+                    return
+                } else {
+                    console.log(err);
+                    if(err.name == 'ValidationError') {
+                        res.statusCode = 400;
+                        res.send({ error: 'Validation error' });
+                    } else {
+                        res.statusCode = 500;
+                        res.send({ error: 'Server error' });
+                    }
+                }
             });
         })
 
     app.get('/idea/:id',  function(req, res) {
+
         Idea.findOne({_id: req.params.id}, function (err, docs) {
-            res.render('idea', {
-                idea: docs
+            Comment.find({ideaId: req.params.id}, function (err, comm) {
+                res.render('idea', {
+                    comments:comm,
+                    idea: docs
+                })
+            })
+        })
+    })
+
+    app.get('/users/:id', isLoggedIn, function(req, res) {
+        if(req.params.id === req.user._id) {
+            res.redirect("/profile")
+            return
+        }
+        User.findOne({_id: req.params.id}, function (err, docs) {
+            Idea.find({authorId: req.params.id}, function (err, ids) {
+                console.log
+                res.render('user', {
+                    ideas:ids,
+                    user: docs
+                })
             })
         })
     })
