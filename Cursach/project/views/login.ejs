@@ -23,19 +23,23 @@
         <br><br><br><br>
         <h1>Login</h1>
 
+        <% if (message.length > 0) { %>
+        <div class="alert alert-danger"><%= message %></div>
+        <% } %>
 
         <form action="/login" method="post">
             <div class="w3-group">
                 <label>Email</label>
-                <input type="text" class="w3-input w3-border" name="email">
+                <input id="us" type="text" class="w3-input w3-border" name="email">
             </div>
             <div class="form-group">
                 <label>Password</label>
-                <input type="password" class="w3-input w3-border" name="password">
+                <input id="pass" type="password" class="w3-input w3-border" name="password">
             </div>
 
-            <button type="submit"class="w3-btn w3-btn-block w3-padding-12 w3-dark-grey">Login</button>
+            <button id="enter" type="submit"class="w3-btn w3-btn-block w3-padding-12 w3-dark-grey">Login</button>
         </form>
+
 
         <hr>
 
