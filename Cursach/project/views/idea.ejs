@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
     <link href="http://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
     <style>
+        .comment{
+            background-color: darkgrey;
+        }
         body {font-family: "Raleway", Arial, sans-serif}
         .w3-row img{margin-bottom:-8px}
         h1{
@@ -18,24 +21,36 @@
 </head>
 <body>
 <a href="http://localhost:8080" class="w3-right w3-btn w3-red">Home</a>
-        <div class="col-sm-6">
+<div class="col-sm-6">
 
-            <div class="well">
+    <div class="well">
 
-                <h3>All ideas</h3>
+        <h3><%=idea.title%></h3>
 
-                <p>
-                    <%for (var i = ideas.length - 1; i >= 0; i--){%>
-                    <p>title: <%=ideas[i].title%></p>
-                    <p>text: <%=ideas[i].text%></p>
-                    <p>author: <%=ideas[i].author%></p>
-                    <p><a href='http://localhost:8080/idea/<%=ideas[i]._id%>'><img alt="picture" style="height:200px; width:300px" src='data:image/jpg;base64,<%= ideas[i].picture.data %>'/></a></p>
-                </p>
-                <%}%>
+        <p>
+        <p>title: <%=idea.title%></p>
+        <p>text: <%=idea.text%></p>
+        <p><img alt="picture" style="height:200px; width:300px" src='data:image/jpg;base64,<%= idea.picture.data %>'/></p>
+        <p>comments:</p>
+        <%for (var i = comments.length - 1; i >= 0; i--){%>
+        <br>
+        <p class="comment">Commented by: <%=comments[i].author%></p>
+        <p><%=comments[i].text%></p>
+        <br>
+        <%}%>
+        </p>
+        <form action="/idea/ <%=idea._id%>" method="post">
+            <div class="form-group">
+                <label>Your comment</label>
+                <input id="comment" type="text" class="w3-input w3-border" name="comment">
             </div>
-        </div>
 
+            <button type="submit"class="w3-btn w3-btn-block w3-padding-12 w3-dark-grey">Comment</button>
+        </form>
     </div>
+</div>
+
+</div>
 
 </div>
 </body>
