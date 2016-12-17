@@ -2,6 +2,7 @@
 <!doctype html>
 <html>
 <head>
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
     <title>Profile</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
@@ -19,35 +20,25 @@
 </head>
 <body>
 
-<div class="container">
+<div class="col-sm-6">
 
-    <div class="page-header text-center">
-        <a href="http://localhost:8080" class="w3-left w3-btn w3-red">Home</a>
-        <h1>Profile Page</h1>
+    <div class="well">
+
+        <h3><%=user.local.email%></h3>
+
+        <p>
+            <%for (var i = ideas.length - 1; i >= 0; i--){%>
+        <p>title: <%=ideas[i].title%></p>
+        <p>text: <%=ideas[i].text%></p>
+        <p>author: <%=ideas[i].author%></p>
+        <p><a href='/idea/<%=ideas[i]._id%>'><img alt="picture" style="height:200px; width:300px" src='data:image/jpg;base64,<%= ideas[i].picture %>'/></a></p>
+        </p>
+        <%}%>
     </div>
+</div>
 
-    <div class="row">
+</div>
 
-        <!-- LOCAL INFORMATION -->
-        <div class="col-sm-6 col-sm-offset-3">
-            <br>
-            <br>
-            <br>
-            <div class="well">
-                <h3><%= user.local.email %></h3>
-
-                <p class="w3-group">
-                    <strong>id</strong>: <%= user._id %><br>
-                    <strong>email</strong>: <%= user.local.email %><br>
-                    <strong>password</strong>: <%= user.local.password %><br>
-                    <strong>role</strong>: <%= user.local.role %><br>
-                </p>
-
-            </div>
-        </div>
-
-    </div>
-    <a href="/logout" style="width:200px; text-align: center" class="w3-center w3-btn w3-red" style="text-align: center">Logout</a>
 </div>
 </body>
 </html>

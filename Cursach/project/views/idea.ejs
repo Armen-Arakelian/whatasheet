@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
 <head>
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
     <title>Ideas</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
@@ -20,7 +21,7 @@
     </style>
 </head>
 <body>
-<a href="http://localhost:8080" class="w3-right w3-btn w3-red">Home</a>
+<a href="/" class="w3-right w3-btn w3-red">Home</a>
 <div class="col-sm-6">
 
     <div class="well">
@@ -30,9 +31,9 @@
         <p>
         <p>title: <%=idea.title%></p>
         <p>text: <%=idea.text%></p>
-        <p><img alt="picture" style="height:200px; width:300px" src='data:image/jpg;base64,<%= idea.picture.data %>'/></p>
+        <p><img alt="picture" style="height:200px; width:300px" src='data:image/jpg;base64,<%= idea.picture%>'/></p>
         <p>comments:</p>
-        <%for (var i = comments.length - 1; i >= 0; i--){%>
+        <%for (var i = 0; i <= comments.length - 1; i++){%>
         <br>
         <p class="comment">Commented by: <%=comments[i].author%></p>
         <p><%=comments[i].text%></p>
@@ -42,7 +43,8 @@
         <form action="/idea/ <%=idea._id%>" method="post">
             <div class="form-group">
                 <label>Your comment</label>
-                <input id="comment" type="text" class="w3-input w3-border" name="comment">
+                <input type="hidden" name="_csrf" value=<%=csrfToken%>>
+                <input type="text" class="w3-input w3-border" name="comment">
             </div>
 
             <button type="submit"class="w3-btn w3-btn-block w3-padding-12 w3-dark-grey">Comment</button>

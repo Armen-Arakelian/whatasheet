@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
 <head>
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
     <title>Create idea</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
@@ -19,13 +20,14 @@
 <div class="container">
 
     <div class="col-sm-6 col-sm-offset-3">
-        <a href="http://localhost:8080" class="w3-left w3-btn w3-red">Home</a>
+        <a href="/" class="w3-left w3-btn w3-red">Home</a>
         <br><br><br><br>
         <h1>Create Idea</h1>
 
         <form method="post" enctype="multipart/form-data">
             <div class="w3-group">
                 <label>Title</label>
+                <input type="hidden" name="_csrf" value=<%=csrfToken%>>
                 <input type="text" class="w3-input w3-border" name="title">
             </div>
             <div class="form-group">

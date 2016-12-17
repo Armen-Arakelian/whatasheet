@@ -7,7 +7,7 @@ var ideaSchema = mongoose.Schema({
         author  : String,
         authorId: String,
 
-        picture : { data: Buffer, contentType: String },
+        picture : String,
 
 });
 

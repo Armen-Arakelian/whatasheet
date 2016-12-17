@@ -5,20 +5,25 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var flash    = require('connect-flash');
 
+var busboyBodyParser = require('busboy-body-parser');
 var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
-var busboyBodyParser = require('busboy-body-parser');
-var bodyParser = require('body-parser');
+var csrf = require("csurf")
 var session      = require('express-session');
+var bodyParser = require('body-parser');
 
-require('./config/passport')(passport);
-
-app.use(morgan('dev'));
-app.use(cookieParser());
-app.use(bodyParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(busboyBodyParser({ limit: '5mb' }));
+
+require('./config/passport')(passport);
+
+
+app.use(morgan('dev'));
+app.use(cookieParser());
+app.use(csrf({cookie: true}))
+app.use(bodyParser());
+
 
 app.set('view engine', 'ejs');
 

@@ -23,7 +23,9 @@ module.exports = function(app, passport) {
     });
 
     app.get('/createIdea', isLoggedIn, function(req, res) {
-        res.render("createIdea");
+        res.render("createIdea", {
+            csrfToken: req.csrfToken()
+        });
     });
 
     app.get('/notLoggedIn', function(req, res) {
@@ -41,8 +43,7 @@ module.exports = function(app, passport) {
             picture : picture64string
 
         });
-        idea.picture.data = picture64string;
-        idea.picture.contentType = 'jpg';
+        idea.picture = picture64string;
         idea.save(function (err) {
             if (!err) {
                 res.redirect("/idea/" + idea._id);
@@ -61,12 +62,17 @@ module.exports = function(app, passport) {
     });
 
     app.get('/', function(req, res) {
-        res.render('index.ejs');
+        res.render('index.ejs', {
+            csrfToken: req.csrfToken()
+        });
     });
 
 
     app.get('/login', function(req, res) {
-     res.render('login.ejs', { message: req.flash('loginMessage') });
+        res.render('login.ejs', {
+            message: req.flash('loginMessage'),
+            csrfToken: req.csrfToken()
+        });
     });
     app.get('/admin', isLoggedIn, isAdmin, function(req, res) {
         res.render('admin.ejs');
@@ -80,31 +86,70 @@ module.exports = function(app, passport) {
 
 
     app.get('/signup', function(req, res) {
-
-
-        res.render('signup.ejs', { message: req.flash('signupMessage') });
+        res.render('signup.ejs', {
+            message: req.flash('signupMessage'),
+            csrfToken: req.csrfToken()
+        });
     });
 
 
     app.post('/signup', passport.authenticate('local-signup', {
-        successRedirect : '/profile',
+        successRedirect : '/',
         failureRedirect : '/signup',
         failureFlash : true
     }));
 
     app.get('/ideas', function(req, res) {
-        Idea.find({}, function(err, docs){
+        Idea.find({}, function(err, ideas){
             res.render('ideas', {
-                ideas : docs
+                ideas : ideas
             })
         })
     });
 
+    // ajax
+    app.get('/getallusers', function(req, res){
+        Idea.find(function(err, usrs){
+            let results = usrs.map(usr => {
+                usr.picture = usr.picture.toString('base64');
+                return usr;
+            });
+
+            res.send(JSON.stringify(results ));
+        })
+    })
+
+    app.get('/getsortedusers', function(req, res){
+        Idea.find({title: req.query.fuser}, function (err, usrs){
+
+            let results = usrs.map(function(usr) {
+                let newUser = {
+                    _id: usr.id,
+                    author: usr.author,
+                    authorId: usr.authorId,
+                    picture: usr.picture.toString('base64'),
+                    text: usr.text,
+                    title: usr.title
+                };
+                return newUser;
+            });
+
+            res.send(JSON.stringify(results ));
+        })
+    })
+
+    //
+
     app.get('/profile', isLoggedIn, function(req, res) {
-        res.render('profile', {
-            user : req.user
-        });
-    });
+        User.findOne({_id: req.user._id}, function (err, docs) {
+            Idea.find({authorId: req.user._id}, function (err, ids) {
+                res.render('user', {
+                    ideas:ids,
+                    user: docs
+                })
+            })
+        })
+    })
 
 
     app.get('/logout', function(req, res) {
@@ -145,28 +190,28 @@ module.exports = function(app, passport) {
         }
     })
 
-        app.post("/idea/:id", isLoggedIn, function (req, res) {
-            var comment = new Comment({
-                text: req.body.comment,
-                ideaId: req.params.id.replace(" ", ""),
-                author: req.user.local.email
-            });
-            comment.save(function (err) {
-                if (!err) {
-                    res.redirect("/ideas");
-                    return
+    app.post("/idea/:id", isLoggedIn, function (req, res) {
+        var comment = new Comment({
+            text: req.body.comment,
+            ideaId: req.params.id.replace(" ", ""),
+            author: req.user.local.email
+        });
+        comment.save(function (err) {
+            if (!err) {
+                res.redirect("back");
+                return
+            } else {
+                console.log(err);
+                if(err.name == 'ValidationError') {
+                    res.statusCode = 400;
+                    res.send({ error: 'Validation error' });
                 } else {
-                    console.log(err);
-                    if(err.name == 'ValidationError') {
-                        res.statusCode = 400;
-                        res.send({ error: 'Validation error' });
-                    } else {
-                        res.statusCode = 500;
-                        res.send({ error: 'Server error' });
-                    }
+                    res.statusCode = 500;
+                    res.send({ error: 'Server error' });
                 }
-            });
-        })
+            }
+        });
+    })
 
     app.get('/idea/:id',  function(req, res) {
 
@@ -174,7 +219,8 @@ module.exports = function(app, passport) {
             Comment.find({ideaId: req.params.id}, function (err, comm) {
                 res.render('idea', {
                     comments:comm,
-                    idea: docs
+                    idea: docs,
+                    csrfToken: req.csrfToken()
                 })
             })
         })
@@ -187,14 +233,17 @@ module.exports = function(app, passport) {
         }
         User.findOne({_id: req.params.id}, function (err, docs) {
             Idea.find({authorId: req.params.id}, function (err, ids) {
-                console.log
                 res.render('user', {
                     ideas:ids,
-                    user: docs
+                    user: docs,
+                    csrfToken: req.csrfToken()
                 })
             })
         })
     })
+
+
+
 };
 
 function isLoggedIn(req, res, next) {
